@@ -12,8 +12,13 @@ const Exercise = sequelize.define('Exercise', {
     allowNull: false,
   },
   date: {
-    type: DataTypes.STRING,
-    defaultValue: new Date().toDateString(),
+    type: DataTypes.DATEONLY, // Usa DATEONLY para fechas sin horas
+    defaultValue: () => new Date().toISOString().split('T')[0], // Asignar fecha actual en formato yyyy-mm-dd
+    get() {
+      // Al obtener la fecha, devolverla en formato DateString()
+      const date = this.getDataValue('date');
+      return new Date(date).toDateString();
+    }
   },
 });
 
